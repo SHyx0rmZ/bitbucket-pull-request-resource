@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e -u
+
+mkdir -p assets
+
+export CGO_ENABLED=0
+
+go build -o assets/check ./cmd/check
+go build -o assets/in ./cmd/in
+go build -o assets/out ./cmd/out
