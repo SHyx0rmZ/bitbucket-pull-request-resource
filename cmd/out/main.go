@@ -7,6 +7,7 @@ import (
 	resource "github.com/SHyx0rmZ/bitbucket-pull-request-resource"
 	"github.com/SHyx0rmZ/go-bitbucket/bitbucket"
 	"github.com/SHyx0rmZ/go-bitbucket/server"
+	"github.com/concourse/atc"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -47,10 +48,11 @@ func main() {
 
 	var output struct {
 		Version  resource.Version
-		Metadata map[string]string
+		Metadata []atc.MetadataField
 	}
 
-	output.Metadata = make(map[string]string)
+	output.Metadata = []atc.MetadataField{}
+	metadata := make(map[string]string)
 
 	for _, key := range []string{"from", "to", "title", "description", "reviewers"} {
 		path := filepath.Join(os.Args[1], input.Params.Path, key)
@@ -60,7 +62,8 @@ func main() {
 			resource.Fatal("reading metadata files", err)
 		}
 
-		output.Metadata[key] = string(bytes)
+		output.Metadata = append(output.Metadata, atc.MetadataField{Name: key, Value: string(bytes)})
+		metadata[key] = string(bytes)
 	}
 
 	repository, err := client.Repository(input.Source.Owner + "/" + input.Source.Repository)
@@ -68,13 +71,20 @@ func main() {
 		resource.Fatal("retrieving repository info", err)
 	}
 
+	reviewers := []string{}
+	for _, reviewer := range strings.Split(metadata["reviewers"], "\n") {
+		if reviewer != "" {
+			reviewers = append(reviewers, reviewer)
+		}
+	}
+
 	pullRequest, err := repository.CreatePullRequest(
 		nil,
-		output.Metadata["from"],
-		output.Metadata["to"],
-		output.Metadata["title"],
-		output.Metadata["description"],
-		strings.Split(output.Metadata["reviewers"], "\n")...,
+		metadata["from"],
+		metadata["to"],
+		metadata["title"],
+		metadata["description"],
+		reviewers...,
 	)
 	if err != nil {
 		resource.Fatal("creating pull request", err)

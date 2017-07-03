@@ -7,6 +7,7 @@ import (
 	resource "github.com/SHyx0rmZ/bitbucket-pull-request-resource"
 	"github.com/SHyx0rmZ/go-bitbucket/bitbucket"
 	"github.com/SHyx0rmZ/go-bitbucket/server"
+	"github.com/concourse/atc"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -60,20 +61,21 @@ func main() {
 
 	var output struct {
 		Version  resource.Version
-		Metadata map[string]string
+		Metadata []atc.MetadataField
 	}
 
 	output.Version = input.Version
-	output.Metadata = make(map[string]string)
-	output.Metadata["state"] = pullRequest.GetState()
-	output.Metadata["author"] = pullRequest.GetAuthorName()
-	output.Metadata["from"] = pullRequest.GetFromRef()
-	output.Metadata["to"] = pullRequest.GetToRef()
-	output.Metadata["title"] = pullRequest.GetTitle()
-	output.Metadata["description"] = pullRequest.GetDescription()
+	output.Metadata = []atc.MetadataField{
+		{Name: "state", Value: pullRequest.GetState()},
+		{Name: "author", Value: pullRequest.GetAuthorName()},
+		{Name: "from", Value: pullRequest.GetFromRef()},
+		{Name: "to", Value: pullRequest.GetToRef()},
+		{Name: "title", Value: pullRequest.GetTitle()},
+		{Name: "description", Value: pullRequest.GetDescription()},
+	}
 
-	for key, value := range output.Metadata {
-		path := filepath.Join(os.Args[1], key)
+	for _, field := range output.Metadata {
+		path := filepath.Join(os.Args[1], field.Name)
 		mode := os.FileMode(0755)
 
 		err = os.MkdirAll(filepath.Dir(path), os.FileMode(0755))
@@ -81,7 +83,7 @@ func main() {
 			resource.Fatal("creating metadata directory", err)
 		}
 
-		err = ioutil.WriteFile(path, []byte(value), mode)
+		err = ioutil.WriteFile(path, []byte(field.Value), mode)
 		if err != nil {
 			resource.Fatal("writing metadata files", err)
 		}
