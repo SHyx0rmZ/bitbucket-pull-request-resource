@@ -15,3 +15,6 @@
 
 # Files produced during build
 /assets/
+
+# Vendored dependencies
+/vendor/

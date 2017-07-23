@@ -1,0 +1,9 @@
+package: github.com/SHyx0rmZ/bitbucket-pull-request-resource
+import:
+- package: github.com/SHyx0rmZ/go-bitbucket
+  subpackages:
+  - bitbucket
+  - server
+- package: github.com/concourse/atc
+- package: github.com/k0kubun/go-ansi
+- package: github.com/mitchellh/colorstring

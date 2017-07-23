@@ -1,0 +1,35 @@
+hash: f2cf1253bd895bbf3ace7ae98e8cda0fcf2f475d319d7844f2e09c6b4aa20d15
+updated: 2017-07-23T15:20:32.716264775+02:00
+imports:
+- name: github.com/bmizerany/pat
+  version: c068ca2f0aacee5ac3681d68e4d0a003b7d1fd2c
+- name: github.com/concourse/atc
+  version: 0ea49e853c30e539c76e7f5bb430bc483e08362e
+- name: github.com/hashicorp/errwrap
+  version: 7554cd9344cec97297fa6649b055a8c98c2a1e55
+- name: github.com/hashicorp/go-multierror
+  version: 83588e72410abfbe4df460eeb6f30841ae47d4c4
+- name: github.com/jessevdk/go-flags
+  version: 6cf8f02b4ae8ba723ddc64dcfd403e530c06d927
+- name: github.com/k0kubun/go-ansi
+  version: c49b5436b29d52b735097d449e59d9794833bafe
+- name: github.com/mattn/go-isatty
+  version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
+- name: github.com/mitchellh/colorstring
+  version: 8631ce90f28644f54aeedcb3e389a85174e067d1
+- name: github.com/mitchellh/mapstructure
+  version: d0303fe809921458f417bcf828397a65db30a7e4
+- name: github.com/SHyx0rmZ/go-bitbucket
+  version: e5229bfb71c1806a09af7187c6d576d65a177ef8
+  subpackages:
+  - bitbucket
+  - server
+- name: github.com/tedsuo/rata
+  version: 0649c23705dfb45a9693b668c4fc1c0666f485d9
+- name: golang.org/x/sys
+  version: 739734461d1c916b6c72a63d7efda2b27edb369f
+  subpackages:
+  - unix
+- name: gopkg.in/yaml.v2
+  version: cd8b52f8269e0feb286dfeef29f8fe4d5b397e0b
+testImports: []
